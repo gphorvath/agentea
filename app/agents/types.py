@@ -14,7 +14,7 @@ class AgentStatus(str, Enum):
 
 # Agent task model
 class AgentTask(BaseModel):
-    id: str | None = None
+    id: str
     name: str
     description: str | None = None
     parameters: dict[Any, Any] = {}
