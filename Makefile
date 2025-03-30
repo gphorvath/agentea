@@ -1,6 +1,6 @@
 DOCKER_IMAGE := agentea:latest
 
-.PHONY: help setup format lint dev prod build clean docker-build docker-run
+.PHONY: help setup format lint dev prod build clean docker-build docker-run docker-stop
 
 # Default target
 .DEFAULT_GOAL := help
@@ -18,6 +18,7 @@ help: ## Show this help message
 
 setup: ## Set up development environment using uv
 	uv sync
+	pre-commit install
 
 format: ## Format code with ruff
 	uv run ruff format .
