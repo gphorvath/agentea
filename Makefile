@@ -1,4 +1,6 @@
-.PHONY: help setup format lint dev prod build clean
+DOCKER_IMAGE := agentea:latest
+
+.PHONY: help setup format lint dev prod build clean docker-build docker-run
 
 # Default target
 .DEFAULT_GOAL := help
@@ -31,6 +33,16 @@ prod: ## Run the production server
 
 build: ## Build package
 	uv build
+
+docker-build: ## Build Docker image
+	docker build -t $(DOCKER_IMAGE) .
+
+docker-run: ## Run Docker container
+	docker run -d -p 8000:8000 $(DOCKER_IMAGE)
+	@echo "Server starting at http://localhost:8000"
+
+docker-stop: ## Stop Docker container
+	docker ps -q --filter ancestor=$(DOCKER_IMAGE) | xargs -r docker stop
 
 clean: ## Clean build artifacts
 	rm -rf build/ dist/ *.egg-info/ .coverage .pytest_cache/ .ruff_cache/ coverage.xml .venv
