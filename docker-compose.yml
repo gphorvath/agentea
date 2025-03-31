@@ -1,0 +1,40 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    environment:
+      - AGENTEA_POSTGRES_HOST=postgres
+      - AGENTEA_POSTGRES_PORT=5432
+      - AGENTEA_POSTGRES_USER=postgres
+      - AGENTEA_POSTGRES_PASSWORD=postgres
+      - AGENTEA_POSTGRES_DATABASE=agentea
+    restart: unless-stopped
+    networks:
+      - agentea_network
+
+  postgres:
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=agentea
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/versions:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+    networks:
+      - agentea_network
+
+networks:
+  agentea_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
