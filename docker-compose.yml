@@ -27,6 +27,7 @@ services:
       - POSTGRES_DB=agentea
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./migrations/versions:/docker-entrypoint-initdb.d
     restart: unless-stopped
     networks:
       - agentea_network
