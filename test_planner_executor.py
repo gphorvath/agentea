@@ -6,7 +6,7 @@ This script demonstrates how to use the Planner and Executor agents via the API.
 It creates a plan, retrieves the plan result, and then executes the plan.
 
 Requirements:
-- Ollama must be running with the llama3 model available
+- Ollama must be running with the gemma3 model available
 - The API server must be running
 
 Usage:
