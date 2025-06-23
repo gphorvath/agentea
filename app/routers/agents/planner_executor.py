@@ -1,15 +1,16 @@
 """Planner and Executor router for the API."""
 
+from typing import Any, Dict, List
+
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
-from typing import Dict, Any, List
+from pydantic import BaseModel
 
-from app.agents.planner.planner_agent import PlannerAgent
 from app.agents.executor.executor_agent import ExecutorAgent
+from app.agents.planner.planner_agent import PlannerAgent
 from app.agents.registry import AgentRegistry
 from app.agents.types import AgentResult, AgentStatus, AgentTask
 from app.routers.agents.types import TaskResponse
-from pydantic import BaseModel
 
 
 # Define new request/response models

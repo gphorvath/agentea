@@ -1,8 +1,10 @@
 """Client for interacting with Ollama API."""
 
-import aiohttp
 import json
-from typing import Dict, Any, Optional
+import re
+from typing import Any, Dict, Optional
+
+import aiohttp
 
 
 class OllamaClient:
@@ -42,8 +44,11 @@ class OllamaClient:
         payload = {
             "model": self.model,
             "prompt": prompt,
-            "temperature": temperature,
-            "max_tokens": max_tokens,
+            "options": {
+                "temperature": temperature,
+                "num_predict": max_tokens,
+            },
+            "stream": True,
         }
 
         if system_prompt:
@@ -57,15 +62,23 @@ class OllamaClient:
 
                 # Ollama returns a stream of JSON objects, one per line
                 full_response = ""
-                async for line in response.content:
-                    if not line:
+                async for line_bytes in response.content:
+                    if not line_bytes:
                         continue
 
                     try:
+                        line = line_bytes.decode("utf-8").strip()
+                        if not line:
+                            continue
+
                         data = json.loads(line)
                         if "response" in data:
                             full_response += data["response"]
-                    except json.JSONDecodeError:
+
+                        # Check if this is the final response
+                        if data.get("done", False):
+                            break
+                    except (json.JSONDecodeError, UnicodeDecodeError):
                         continue
 
                 return full_response
@@ -74,7 +87,7 @@ class OllamaClient:
         self,
         prompt: str,
         system_prompt: Optional[str] = None,
-        output_format: Dict[str, Any] = None,
+        output_format: Optional[Dict[str, Any]] = None,
         temperature: float = 0.7,
         max_tokens: int = 1000,
     ) -> Dict[str, Any]:
@@ -127,19 +140,19 @@ class OllamaClient:
                     for i in range(1, len(json_match), 2):
                         try:
                             return json.loads(json_match[i])
-                        except:
+                        except json.JSONDecodeError:
                             continue
 
                 # Last resort: try to find anything that looks like JSON
-                import re
 
-                json_pattern = r"\{(?:[^{}]|(?R))*\}"
+                # Find JSON objects using a simpler pattern that works in Python
+                json_pattern = r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}"
                 matches = re.findall(json_pattern, response_text)
                 if matches:
                     for match in matches:
                         try:
                             return json.loads(match)
-                        except:
+                        except json.JSONDecodeError:
                             continue
 
                 # If all else fails, return the raw text

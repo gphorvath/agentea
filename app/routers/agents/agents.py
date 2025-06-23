@@ -3,12 +3,11 @@
 from fastapi import APIRouter, BackgroundTasks
 from fastapi.exceptions import HTTPException
 
-from app.agents.data_processing_example.data_processing_agent import DataProcessingAgent
 from app.agents.calculator.calculator_agent import CalculatorAgent
+from app.agents.data_processing_example.data_processing_agent import DataProcessingAgent
 from app.agents.registry import AgentRegistry
 from app.agents.types import AgentResult, AgentStatus, AgentTask
 from app.routers.agents.types import TaskRequest, TaskResponse
-
 
 router = APIRouter(prefix="/agents", tags=["agents"])
 

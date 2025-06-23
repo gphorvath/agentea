@@ -3,7 +3,7 @@
 from typing import List
 
 from app.agents.base import Agent
-from app.agents.types import AgentTask, AgentResult, AgentStatus
+from app.agents.types import AgentResult, AgentStatus, AgentTask
 from app.clients.ollama_client import OllamaClient
 
 
