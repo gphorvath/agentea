@@ -1,7 +1,8 @@
 # Agent status enum
-from enum import Enum
 import uuid
+from enum import Enum
 from typing import Any
+
 from pydantic import BaseModel
 
 

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from .routers import agents_router, healthz_router
+
+from .routers import agents_router, healthz_router, planner_executor_router
 
 app = FastAPI()
 
@@ -13,3 +14,4 @@ async def root():
 
 app.include_router(agents_router)
 app.include_router(healthz_router)
+app.include_router(planner_executor_router)

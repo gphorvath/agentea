@@ -1,6 +1,6 @@
 DOCKER_IMAGE := agentea:latest
 
-.PHONY: help setup format lint dev prod build clean docker-build docker-run docker-stop
+.PHONY: help setup lint dev prod build clean docker-build docker-run docker-stop
 
 # Default target
 .DEFAULT_GOAL := help
@@ -20,11 +20,10 @@ setup: ## Set up development environment using uv
 	uv sync
 	pre-commit install
 
-format: ## Format code with ruff
-	uv run ruff format .
-
-lint: ## Run linters
+lint: ## Run linters with format and import sort
+	uv run ruff check . --select I --fix
 	uv run ruff check . --fix
+	uv run ruff format .
 
 dev: ## Run the development server
 	uv run fastapi dev
