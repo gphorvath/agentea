@@ -30,7 +30,6 @@ make dev
 ## Development Commands
 
 ```bash
-make format    # Format code with ruff
 make lint      # Run linters
 make prod      # Run production server
 make build     # Build package
@@ -86,7 +85,7 @@ planner = PlannerAgent(
     name="planner_agent",
     description="Creates structured plans",
     ollama_url="http://localhost:11434",
-    model="llama3"
+    model="gemma3"
 )
 
 # Create a plan
@@ -118,7 +117,7 @@ executor = ExecutorAgent(
     name="executor_agent",
     description="Executes plans",
     ollama_url="http://localhost:11434",
-    model="llama3"
+    model="gemma3"
 )
 
 # Execute a plan
@@ -141,17 +140,16 @@ result = executor.get_result(task_id)
 ## Requirements for Planner and Executor
 
 - Ollama must be installed and running
-- The llama3 model must be available in Ollama
-- Install the required dependencies: `pip install aiohttp`
+- The gemma3 model must be available in Ollama
 
-To run Ollama with the llama3 model:
+To run Ollama with the gemma3 model:
 
 ```bash
 # Install Ollama (if not already installed)
 # See https://ollama.com/download
 
-# Pull the llama3 model
-ollama pull llama3
+# Pull the gemma3 model
+ollama pull gemma3
 
 # Run Ollama
 ollama serve

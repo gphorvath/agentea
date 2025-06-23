@@ -15,7 +15,7 @@ class ExecutorAgent(Agent):
         name: str,
         description: str | None = None,
         ollama_url: str = "http://localhost:11434",
-        model: str = "llama3",
+        model: str = "gemma3",
     ):
         """
         Initialize the executor agent.
